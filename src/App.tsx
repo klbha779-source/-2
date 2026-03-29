@@ -40,7 +40,13 @@ export default function App() {
           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
             <div className="flex items-center gap-3">
               <BookOpen className="w-8 h-8" />
-              <h1 className="text-2xl font-bold tracking-tight">المراجعة المركزة</h1>
+              <div className="flex flex-col">
+                <h1 className="text-2xl font-bold tracking-tight">المراجعة المركزة</h1>
+                <p className="text-xs sm:text-sm text-indigo-200 font-medium mt-0.5 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                  تفليش قواعد وأدب الجزء الثاني مع عباس قيس
+                </p>
+              </div>
             </div>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
