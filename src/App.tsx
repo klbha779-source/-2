@@ -20,6 +20,11 @@ export default function App() {
   const [activeLitTab, setActiveLitTab] = useState(literatureData[0].id);
   const [activeGrammarTab, setActiveGrammarTab] = useState(grammarData[0].id);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showExercises, setShowExercises] = useState(false);
+
+  useEffect(() => {
+    setShowExercises(false);
+  }, [activeGrammarTab, mainSection]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -374,6 +379,58 @@ export default function App() {
                     ))}
                   </div>
                 </div>
+
+                {/* Exercises Button & Section */}
+                {activeGrammarData.exercises && (
+                  <div className="mt-8">
+                    <button
+                      onClick={() => setShowExercises(!showExercises)}
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3 text-xl"
+                    >
+                      <Book className="w-6 h-6" />
+                      {showExercises ? `إخفاء التمارين المنهجية لموضوع ${activeGrammarData.title}` : `اطلع على التمارين المنهجية لموضوع ${activeGrammarData.title}`}
+                    </button>
+
+                    <AnimatePresence>
+                      {showExercises && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden mt-6 space-y-8"
+                        >
+                          {activeGrammarData.exercises.map((exercise, idx) => (
+                            <div key={idx} className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-slate-200 dark:border-slate-700">
+                              <h3 className="text-2xl font-bold text-indigo-900 dark:text-indigo-300 mb-6 flex items-center gap-3">
+                                <span className="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                                  {idx + 1}
+                                </span>
+                                {exercise.title}
+                              </h3>
+                              <div className="space-y-6">
+                                {exercise.questions.map((q, qIdx) => (
+                                  <div key={qIdx} className="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-100 dark:border-slate-700">
+                                    <h4 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 font-serif leading-relaxed">
+                                      {q.q}
+                                    </h4>
+                                    <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800/30">
+                                      <div className="font-bold text-emerald-800 dark:text-emerald-300 mb-2 flex items-center gap-2">
+                                        <CheckCircle2 className="w-5 h-5" /> الجواب:
+                                      </div>
+                                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line text-lg">
+                                        {q.a}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
